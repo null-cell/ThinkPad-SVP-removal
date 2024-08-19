@@ -1,0 +1,4 @@
+#!/bin/bash
+set -uex
+cd $EDKPATH
+mkdir flashing && source edksetup.sh BaseTools && cd flashing && build && cp $EDKPATH/Build/MdeModule/DEBUG_GCC5/X64/MdeModulePkg/Application/ExploitReplicaBO/ExploitReplicaBO/OUTPUT/BootOption.efi ./ && cp $EDKPATH/Build/MdeModule/DEBUG_GCC5/X64/MdeModulePkg/Application/ExploitReplica/ExploitReplica/OUTPUT/LenovoTranslateService.efi ./ && ./genWhole.sh BootOption E0746C42-D3F9-4F8B-B211-1410957B9FF5 && ./genWhole.sh LenovoTranslateOption 826BCF56-BAC4-43F4-8EA1-8CDF0A121ABD && cp BootOption.ffs $PATCHPATH/patch/DXE/ && cp LenovoTranslateService.ffs $PATCHPATH/patch/DXE/ && $PATCHPATH/autopatch $PATCHPATH/${IMAGE_NAME}.bin && sudo flashrom --programmer ch341a_spi -w $PATCHPATH/${IMAGE_NAME}_PATCHED.bin -n && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
